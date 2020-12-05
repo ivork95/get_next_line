@@ -1,118 +1,67 @@
-int	get_next_line(int fd, char **line)
-{
-	static char temp[BUF_SIZE + 1];
-	static char buff[BUF_SIZE + 1];
-	int i;
-	int j;
-	int k;
-	int ret;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line_utils.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/12/04 11:40:12 by anonymous     #+#    #+#                 */
+/*   Updated: 2020/12/04 11:40:12 by anonymous     ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+{
+	size_t			srclen;
+	unsigned int	i;
+
+	if (!dest || !src)
+		return (0);
 	i = 0;
-	j = 0;
-	ret = 1;
-	*line = calloc(200, sizeof(char));
-	while (ret)
+	srclen = strlen(src);
+	if (n == 0)
 	{
-		ret = read(fd, buff, BUF_SIZE);
-		buff[ret] = '\0';
-		k = 0;
-		if (*temp)
-		{
-			memccpy(*line, temp, '\n', BUF_SIZE);
-			*temp = 0;
-			i = strlen(*line);
-		}
-		while(buff[k])
-		{
-			// CHANGE FOR STRCHR
-			if (buff[k] == '\n')
-			{
-				k++;
-				while(buff[k])
-				{
-					temp[j] = buff[k];
-					j++;
-					k++;
-				}
-				temp[j] = '\0';
-				return (1);
-			}
-			line[0][i] = buff[k];
-			i++;
-			k++;
-		}
+		return (srclen);
 	}
-	return (0);
+	while ((src[i] != '\0') && (i < n - 1))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	if (n != 0)
+		dest[i] = '\0';
+	return (srclen);
 }
 
-int	get_next_line(int fd, char **line)
-{
-	static char *temp;
-	static char buff[BUF_SIZE + 1];
-	int i;
-	int j;
-	int k;
-	int ret;
 
+char	*ft_strcjoin(char *s1, char *s2, size_t n)
+{
+	char	*newstr;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (0);
+	newstr = (char*)malloc(strlen(s1) + strlen(s2) + 1);
 	i = 0;
 	j = 0;
-	ret = 1;
-	temp = calloc(BUF_SIZE, sizeof(char));
-	*line = calloc(200, sizeof(char));
-	printf("test\n");
-	while (ret)
+	if (newstr == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		printf("test2\n");
-		ret = read(fd, buff, BUF_SIZE);
-		printf("buff = %s\n", buff);
-		printf("test3");
-		if(*temp != 0)
-		{
-			printf("test temp");
-			memccpy(*line, temp, '\n', BUF_SIZE);
-		}
-		printf("test4\n");
-		*line = ft_strcjoin(*line, buff);
-		printf("line = %s\n", *line);
-		temp = ft_strchr(buff, '\n');
-		printf("temp = %s\n", temp);
-		if (ft_strchr(buff, '\n'))
-			return (1);
+		newstr[i] = s1[i];
+		i++;
 	}
-	return (0);
-}
-
-int	get_next_line(int fd, char **line)
-{
-	static char *temp;
-	static char buff[BUF_SIZE + 1];
-	int i;
-	int ret;
-
-	i = 0;
-	ret = 1;
-	printf("temp before = %s\n", temp);
-	while (ret)
+	while (s2[n] != '\0' && s2[n] != '\n')
 	{
-		ret = read(fd, buff, BUF_SIZE);
-		buff[ret] = '\0';
-		printf("buff = %s\n", buff);
-		printf("temp = %s\n", temp);
-		if (temp != 0)
-		{
-			memccpy(*line, temp, '\n', BUF_SIZE);
-			*temp = 0;
-			i = strlen(*line);
-			printf("line in = %s\n", *line);
-		}
-		printf("test\n");
-		*line = ft_strcjoin(*line, buff);
-		printf("line = %s\n", *line);
-		free(temp);
-		temp = ft_strchr(buff, '\n');
-		printf("temp2 = %s\n", temp);
-		if (temp != 0)
-			return(1);
+		newstr[i] = s2[n];
+		i++;
+		n++;
 	}
-	return (0);
+	newstr[i] = '\0';
+	return (newstr);
 }
