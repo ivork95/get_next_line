@@ -37,18 +37,15 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 	return (srclen);
 }
 
-
 char	*ft_strcjoin(char *s1, char *s2, size_t n)
 {
 	char	*newstr;
 	size_t	i;
-	size_t	j;
 
 	if (!s1 || !s2)
 		return (0);
 	newstr = (char*)malloc(strlen(s1) + strlen(s2) + 1);
 	i = 0;
-	j = 0;
 	if (newstr == NULL)
 		return (NULL);
 	while (s1[i] != '\0')
