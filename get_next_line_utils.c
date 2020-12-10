@@ -6,13 +6,14 @@
 /*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/04 11:40:12 by anonymous     #+#    #+#                 */
-/*   Updated: 2020/12/04 11:40:12 by anonymous     ########   odam.nl         */
+/*   Updated: 2020/12/10 15:21:30 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 char	*ft_memmove(char *dest, char *src)
 {
@@ -27,6 +28,7 @@ char	*ft_memmove(char *dest, char *src)
 	dest[i] = '\0';
 	return (dest);
 }
+
 char	*ft_bzero(char *str)
 {
 	int i;
@@ -48,7 +50,7 @@ int		ft_strchr(char *str, char c)
 	while (str[i] != '\0')
 	{
 		if (str[i] == c)
-			return (i);
+			return (i + 1);
 		i++;
 	}
 	return (0);
@@ -61,7 +63,7 @@ char	*ft_strcjoin(char *s1, char *s2)
 	size_t	n;
 
 	if (!s1 || !s2)
-		return (0);
+		return (NULL);
 	newstr = (char*)malloc(strlen(s1) + strlen(s2) + 1);
 	i = 0;
 	n = 0;
