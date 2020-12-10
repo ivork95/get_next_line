@@ -14,38 +14,57 @@
 #include <string.h>
 #include <stdlib.h>
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+char	*ft_memmove(char *dest, char *src)
 {
-	size_t			srclen;
-	unsigned int	i;
+	int i;
 
-	if (!dest || !src)
-		return (0);
 	i = 0;
-	srclen = strlen(src);
-	if (n == 0)
-	{
-		return (srclen);
-	}
-	while ((src[i] != '\0') && (i < n - 1))
+	while (src[i] != '\0')
 	{
 		dest[i] = src[i];
 		i++;
 	}
-	if (n != 0)
-		dest[i] = '\0';
-	return (srclen);
+	dest[i] = '\0';
+	return (dest);
+}
+char	*ft_bzero(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		str[i] = 0;
+		i++;
+	}
+	return (str);
 }
 
-char	*ft_strcjoin(char *s1, char *s2, size_t n)
+int		ft_strchr(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_strcjoin(char *s1, char *s2)
 {
 	char	*newstr;
 	size_t	i;
+	size_t	n;
 
 	if (!s1 || !s2)
 		return (0);
 	newstr = (char*)malloc(strlen(s1) + strlen(s2) + 1);
 	i = 0;
+	n = 0;
 	if (newstr == NULL)
 		return (NULL);
 	while (s1[i] != '\0')
@@ -60,5 +79,6 @@ char	*ft_strcjoin(char *s1, char *s2, size_t n)
 		n++;
 	}
 	newstr[i] = '\0';
+	free(s1);
 	return (newstr);
 }

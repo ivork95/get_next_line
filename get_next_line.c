@@ -6,7 +6,7 @@
 /*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 17:27:02 by anonymous     #+#    #+#                 */
-/*   Updated: 2020/12/06 19:26:17 by ivork         ########   odam.nl         */
+/*   Updated: 2020/12/09 17:46:37 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,32 @@
 #include <unistd.h>
 #include <string.h>
 #include "get_next_line.h"
-#define BUFF_SIZE 19
 
 int		get_next_line(int fd, char **line)
 {
-	char buff[BUFF_SIZE + 1];
+	static char buff[BUFFER_SIZE + 1];
 	int ret;
 
 	ret = 1;
+	*line = calloc(1 ,1);
 	while(ret)
 	{
-		ret = read(fd, buff, BUFF_SIZE);
-		*line = ft_strcjoin(*line, buff);
-		if (strchr(buff, '/n'))	
-			ft_memmove(buff)
+		if (!*buff)
+		{
+			ret = read(fd, buff, BUFFER_SIZE);
+			buff[ret] = '\0'; 
+		}
+		if (ret < 0)
+			return (-1);
+		*line = ft_strcjoin(*line, buff, '\n');
+		if (ft_strchr(buff, '\n'))
+		{
+			ft_memmove(buff, buff + (ft_strchr(buff, '\n') + 1));
+			return (1);
+		}
+		ft_bzero(buff);
 	}
+	return (0);
 }
 
 int		main(int argc, char **argv)
@@ -39,7 +50,7 @@ int		main(int argc, char **argv)
 	int		fd;
 	char	*line[100];
 	int		ret;
-	int		count = 0;
+	// int		count = 0;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
