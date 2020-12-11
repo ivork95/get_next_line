@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.c                                    :+:    :+:            */
+/*   get_next_line_bonus.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/26 17:27:02 by anonymous     #+#    #+#                 */
-/*   Updated: 2020/12/11 13:58:03 by ivork         ########   odam.nl         */
+/*   Created: 2020/12/11 00:37:26 by anonymous     #+#    #+#                 */
+/*   Updated: 2020/12/11 13:55:10 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@
 
 int		get_next_line(int fd, char **line)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	buff[1024][BUFFER_SIZE + 1];
 	int			ret;
 
-	if (BUFFER_SIZE <= 0 || fd < 0 || line == NULL)
+	if (BUFFER_SIZE <= 0)
 		return (-1);
 	ret = 1;
 	*line = malloc(sizeof(char));
 	*line[0] = '\0';
 	while (ret)
 	{
-		if (!*buff)
+		if (!*buff[fd])
 		{
-			ret = read(fd, buff, BUFFER_SIZE);
-			buff[ret] = '\0';
+			ret = read(fd, buff[fd], BUFFER_SIZE);
+			buff[fd][ret] = '\0';
 			if (ret < 0)
 				return (-1);
 		}
-		*line = ft_strcjoin(*line, buff);
-		if (ft_memmove(buff, buff + (ft_strchr(buff, '\n'))))
+		*line = ft_strcjoin(*line, buff[fd]);
+		if (ft_memmove(buff[fd], buff[fd] + (ft_strchr(buff[fd], '\n'))))
 			return (1);
-		ft_bzero(buff);
+		ft_bzero(buff[fd]);
 	}
 	return (0);
 }
